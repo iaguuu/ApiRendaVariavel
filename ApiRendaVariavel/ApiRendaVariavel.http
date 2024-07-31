@@ -1,0 +1,7 @@
+@rootUrl = http://localhost:5250/api/v1
+###https://localhost:7262
+
+GET {{rootUrl}}/FundosImobiliarios
+Accept: application/json
+
+###
