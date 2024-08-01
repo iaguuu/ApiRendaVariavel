@@ -2,7 +2,6 @@
 using ApiRendaVariavel.Domain.Entities;
 using ApiRendaVariavel.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace ApiRendaVariavel.Domain.Controllers
 {
@@ -60,18 +59,15 @@ namespace ApiRendaVariavel.Domain.Controllers
         }
 
         [HttpPut("{ticker}")]
-        public ActionResult Upadate([FromBody] FundoImobiliarioDTO fundoImobiliarioDTO, string ticker)
+        public ActionResult Upadate([FromBody] FundoImobiliarioDTO fundoImobiliarioDTO)
         {
-            FundoImobiliario? fundoImobiliario = _fundoImobiliarioService.searchByTicker(ticker);
+            FundoImobiliario? fundoImobiliario = _fundoImobiliarioService.searchByTicker(fundoImobiliarioDTO.Ticker);
 
             if (fundoImobiliario is null)
                 return NotFound();
 
-            if (fundoImobiliario is not null && ticker != fundoImobiliarioDTO.Ticker)
-                return Problem($"Não é possível alterar o ticker {ticker} para {fundoImobiliarioDTO.Ticker}, pois {ticker} já está cadastrado", statusCode: (int)HttpStatusCode.Conflict);
-			
             fundoImobiliario.Cnpj = fundoImobiliarioDTO.Cnpj;
-			fundoImobiliario.tipoFundoImobiliario = fundoImobiliarioDTO.tipoFundoImobiliario,
+            fundoImobiliario.tipoFundoImobiliario = fundoImobiliarioDTO.tipoFundoImobiliario;
             fundoImobiliario.Segmento = fundoImobiliarioDTO.Segmento;
             fundoImobiliario.PublicoAlvo = fundoImobiliarioDTO.PublicoAlvo;
             fundoImobiliario.Mandato = fundoImobiliarioDTO.Mandato;
